@@ -4,14 +4,19 @@ import axios from 'axios';
 import { endpoints } from '../../config';
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       movieList: [],
       genreList: [],
+      liked: false,
     };
   }
+
+  onHeartClick = () => {
+    this.setState({ liked: true });
+  };
 
   componentDidMount() {
     this.requestPopularMovies();
@@ -71,7 +76,12 @@ class App extends React.Component {
           </ul>
         ) : null}
         {movieList.map(movie => (
-          <Card key={movie.id} data={movie} />
+          <Card
+            onClick={() => this.onHeartClick()}
+            key={movie.id}
+            data={movie}
+            liked={this.state.liked}
+          />
         ))}
       </React.Fragment>
     );
