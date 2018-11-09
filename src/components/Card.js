@@ -7,8 +7,15 @@ class Card extends React.Component {
 
     this.state = {
       summaryShowing: false,
+      like: false,
     };
   }
+
+  likeMovie = () => {
+    this.setState(prevState => ({
+      like: !prevState.like,
+    }));
+  };
 
   toggleSummary = () => {
     const { summaryShowing } = this.state;
@@ -40,8 +47,8 @@ class Card extends React.Component {
 
         <div className="card__title">{original_title}</div>
 
-        <div className="card__like">
-          <i className="fa fa-heart-o" />
+        <div onClick={() => this.likeMovie()} className="card__like">
+          <i className={!this.state.like ? 'fa fa-heart-o' : 'fa fa-heart'} />
         </div>
 
         <div className="card__subtitle">
