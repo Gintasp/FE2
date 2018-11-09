@@ -33,12 +33,23 @@ class App extends React.Component {
     axios
       .get(endpoints.genres())
       .then(response => {
-        console.log(response);
         this.setState({
           genreList: response.data.genres,
         });
       })
       .catch(error => console.log(error.response));
+  };
+
+  filterMovies = id => {
+    axios
+      .get(endpoints.genreMovies(id))
+      .then(response => {
+        console.log(response);
+        this.setState({
+          movieList: response.data.results,
+        });
+      })
+      .catch(error => console.log(error));
   };
 
   render() {
@@ -49,7 +60,11 @@ class App extends React.Component {
         {genreList ? (
           <ul className="genre__list">
             {genreList.map(genre => (
-              <li key={genre.id} className="genre__item">
+              <li
+                onClick={() => this.filterMovies(genre.id)}
+                key={genre.id}
+                className="genre__item"
+              >
                 {genre.name}
               </li>
             ))}
