@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from './Card';
+
 import axios from 'axios';
+
 import { endpoints } from '../../config';
 
 class App extends React.Component {
@@ -32,8 +34,6 @@ class App extends React.Component {
     this.setState({
       liked: arr,
     });
-
-    console.log(this.state.liked);
   };
 
   componentDidMount() {
