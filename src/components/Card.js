@@ -1,4 +1,7 @@
 import React from 'react';
+
+import PropTypes from 'prop-types';
+
 import { getImageUrl } from '../../config';
 
 class Card extends React.Component {
@@ -78,5 +81,10 @@ class Card extends React.Component {
     );
   }
 }
+
+Card.propTypes = {
+  liked: PropTypes.array,
+  movieId: PropTypes.number,
+};
 
 export default Card;
