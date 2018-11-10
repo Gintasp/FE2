@@ -10,12 +10,30 @@ class App extends React.Component {
     this.state = {
       movieList: [],
       genreList: [],
-      liked: false,
+      liked: [],
     };
   }
 
-  onHeartClick = () => {
-    this.setState({ liked: true });
+  onHeartClick = id => {
+    const arr = this.state.liked;
+
+    if (arr.length != 0) {
+      arr.map(likedId => {
+        if (likedId == id) {
+          arr.splice(arr.indexOf(id), 1);
+        } else {
+          arr.push(id);
+        }
+      });
+    } else {
+      arr.push(id);
+    }
+
+    this.setState({
+      liked: arr,
+    });
+
+    console.log(this.state.liked);
   };
 
   componentDidMount() {
@@ -58,7 +76,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { movieList, genreList } = this.state;
+    const { movieList, genreList, liked } = this.state;
 
     return (
       <React.Fragment>
@@ -77,10 +95,11 @@ class App extends React.Component {
         ) : null}
         {movieList.map(movie => (
           <Card
-            onClick={() => this.onHeartClick()}
+            onClick={() => this.onHeartClick(movie.id)}
             key={movie.id}
+            movieId={movie.id}
             data={movie}
-            liked={this.state.liked}
+            liked={liked}
           />
         ))}
       </React.Fragment>
