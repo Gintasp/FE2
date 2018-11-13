@@ -19,30 +19,30 @@ class App extends React.Component {
   requestMovies = () => {
     axios
       .get(endpoints.mostPopularMovies())
-      .then((res) => this.setMovieList(res.data.results))
-      .catch((error) => console.log(error));
+      .then(res => this.setMovieList(res.data.results))
+      .catch(error => console.log(error));
   };
 
-  setMovieList = (movieList) => {
+  setMovieList = movieList => {
     this.setState({
       movieList,
-    })
+    });
   };
 
-  addHeart = (id) => {
+  addHeart = id => {
     const { hearted } = this.state;
 
     this.setState({
-      hearted: [ ...hearted, id ],
-    })
+      hearted: [...hearted, id],
+    });
   };
 
-  removeHeart = (id) => {
+  removeHeart = id => {
     const { hearted } = this.state;
 
     this.setState({
-      hearted: hearted.filter((currentId) => currentId !== id),
-    })
+      hearted: hearted.filter(currentId => currentId !== id),
+    });
   };
 
   render() {
@@ -53,7 +53,7 @@ class App extends React.Component {
         <Genres onChangeList={this.setMovieList} />
 
         <div className="cards">
-          {movieList.map((movie) => (
+          {movieList.map(movie => (
             <Card
               key={movie.id}
               isHearted={hearted.includes(movie.id)}

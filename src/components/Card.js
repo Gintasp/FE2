@@ -57,7 +57,10 @@ export default class Card extends React.Component {
 
         <div className="card__title">{original_title}</div>
 
-        <div className="card__like" onClick={isHearted ? onRemoveHeart : onAddHeart}>
+        <div
+          className="card__like"
+          onClick={isHearted ? onRemoveHeart : onAddHeart}
+        >
           <i className={`fa fa-heart${isHearted ? '' : '-o'}`} />
         </div>
 
@@ -73,11 +76,9 @@ export default class Card extends React.Component {
             Summary
           </div>
 
-          {opened
-            ? <div className="card-info__description">{overview}</div>
-            : null
-          }
-
+          {opened ? (
+            <div className="card-info__description">{overview}</div>
+          ) : null}
         </div>
       </div>
     );
