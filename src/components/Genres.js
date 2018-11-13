@@ -1,51 +1,50 @@
 import React from 'react';
-import axios from 'axios';
-import { endpoints } from '../../config';
 
-export default class Genres extends React.Component {
-  constructor() {
-    super();
+import { connect } from 'react-redux';
 
-    this.state = {
-      genres: [],
-    };
+import * as actions from '../store/actions';
 
-    this.requestGenres();
+class Genres extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.props.onRequestGenres();
   }
 
-  requestGenres = () => {
-    axios
-      .get(endpoints.genres())
-      .then((res) => this.setGenreList(res.data.genres))
-      .catch((error) => console.log(error));
-  };
-
-  requestGenresMovies = (id) => {
-    const { onChangeList } = this.props;
-
-    axios
-      .get(endpoints.genreMovies(id))
-      .then((res) => onChangeList(res.data.results))
-      .catch((error) => console.log(error));
-  };
-
-  setGenreList = (genres) => {
-    this.setState({
-      genres,
-    })
-  };
-
   render() {
-    const { genres } = this.state;
-
     return (
       <div className="genres">
-        {genres.map((genre) => (
-          <div key={genre.id} className="genre" onClick={() => this.requestGenresMovies(genre.id)}>
-            {genre.name}
-          </div>
-        ))}
+        {this.props.genres
+          ? this.props.genres.map(genre => (
+              <div
+                key={genre.id}
+                className="genre"
+                onClick={() => this.props.onRequestGenresMovies(genre.id)}
+              >
+                {genre.name}
+              </div>
+            ))
+          : null}
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { genres } = state;
+  return {
+    genres,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onRequestGenresMovies: id => dispatch(actions.requestGenresMovies(id)),
+    onRequestGenres: () => dispatch(actions.requestGenres()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Genres);

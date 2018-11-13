@@ -17,12 +17,6 @@ class App extends React.Component {
     this.props.onRequestMovies();
   }
 
-  setMovieList = movieList => {
-    this.setState({
-      movieList,
-    });
-  };
-
   addHeart = id => {
     const { hearted } = this.state;
 
@@ -44,7 +38,7 @@ class App extends React.Component {
 
     return (
       <React.Fragment>
-        <Genres onChangeList={this.setMovieList} />
+        <Genres />
 
         <div className="cards">
           {this.props.movieList
