@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 import { getImageUrl } from '../../config';
 
-class Card extends React.Component {
+export default class Card extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      summaryShowing: false,
+      opened: false,
     };
   }
 
@@ -25,18 +25,20 @@ class Card extends React.Component {
   };
 
   toggleSummary = () => {
-    const { summaryShowing } = this.state;
+    const { opened } = this.state;
 
     this.setState({
-      summaryShowing: !summaryShowing,
+      opened: !opened,
     });
   };
 
   render() {
-    const { summaryShowing } = this.state;
     const {
-      data: {
-        poster_path,
+      isHearted,
+      onAddHeart,
+      onRemoveHeart,
+      movie: {
+        backdrop_path,
         original_title,
         overview,
         release_date,
@@ -44,20 +46,19 @@ class Card extends React.Component {
         vote_count,
       },
     } = this.props;
+    const { opened } = this.state;
 
     return (
       <div className="card">
         <div
           className="card__image"
-          style={{ backgroundImage: `url(${getImageUrl(poster_path)})` }}
+          style={{ backgroundImage: `url(${getImageUrl(backdrop_path)})` }}
         />
 
         <div className="card__title">{original_title}</div>
 
-        <div onClick={this.props.onClick} className="card__like">
-          <i
-            className={this.checkLiked(this.props.liked, this.props.movieId)}
-          />
+        <div className="card__like" onClick={isHearted ? onRemoveHeart : onAddHeart}>
+          <i className={`fa fa-heart${isHearted ? '' : '-o'}`} />
         </div>
 
         <div className="card__subtitle">
@@ -67,24 +68,18 @@ class Card extends React.Component {
           </span>
         </div>
 
-        {summaryShowing ? (
-          <div className="card-info">
-            <div className="card-info__header">Summary</div>
-            <div className="card-info__description">{overview}</div>
+        <div className="card-info">
+          <div className="card-info__header" onClick={this.toggleSummary}>
+            Summary
           </div>
-        ) : null}
 
-        <div className="button" onClick={() => this.toggleSummary()}>
-          Show summary
+          {opened
+            ? <div className="card-info__description">{overview}</div>
+            : null
+          }
+
         </div>
       </div>
     );
   }
 }
-
-Card.propTypes = {
-  liked: PropTypes.array,
-  movieId: PropTypes.number,
-};
-
-export default Card;
