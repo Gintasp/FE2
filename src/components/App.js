@@ -10,44 +10,21 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      hearted: [],
-    };
-
     this.props.onRequestMovies();
   }
 
-  addHeart = id => {
-    const { hearted } = this.state;
-
-    this.setState({
-      hearted: [...hearted, id],
-    });
-  };
-
-  removeHeart = id => {
-    const { hearted } = this.state;
-
-    this.setState({
-      hearted: hearted.filter(currentId => currentId !== id),
-    });
-  };
-
   render() {
-    const { hearted } = this.state;
-
     return (
       <React.Fragment>
         <Genres />
-
         <div className="cards">
           {this.props.movieList
             ? this.props.movieList.map(movie => (
                 <Card
                   key={movie.id}
-                  isHearted={hearted.includes(movie.id)}
-                  onAddHeart={() => this.addHeart(movie.id)}
-                  onRemoveHeart={() => this.removeHeart(movie.id)}
+                  isHearted={this.props.hearted.includes(movie.id)}
+                  onAddHeart={() => this.props.onAddHeart(movie.id)}
+                  onRemoveHeart={() => this.props.onRemoveHeart(movie.id)}
                   movie={movie}
                 />
               ))
@@ -59,15 +36,18 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { movieList } = state;
+  const { movieList, hearted } = state;
   return {
     movieList,
+    hearted,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onRequestMovies: () => dispatch(actions.requestMovies()),
+    onAddHeart: id => dispatch(actions.addHeart(id)),
+    onRemoveHeart: id => dispatch(actions.removeHeart(id)),
   };
 };
 

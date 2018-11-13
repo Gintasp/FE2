@@ -51,3 +51,17 @@ const requestGenresSuccess = data => {
     payload: data,
   };
 };
+
+export const addHeart = id => {
+  return {
+    type: types.ADD_HEART,
+    payload: id,
+  };
+};
+
+export const removeHeart = id => {
+  return {
+    type: types.REMOVE_HEART,
+    payload: id,
+  };
+};

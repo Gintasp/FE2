@@ -23,6 +23,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         movieList: action.payload,
       };
+    case types.ADD_HEART:
+      return {
+        ...state,
+        hearted: [...state.hearted, action.payload],
+      };
+    case types.REMOVE_HEART:
+      return {
+        ...state,
+        hearted: state.hearted.filter(currId => currId !== action.payload),
+      };
     default:
       return state;
   }
