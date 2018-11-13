@@ -1,0 +1,2 @@
+export const REQUEST_MOVIES = 'REQUEST_MOVIES';
+export const REQUEST_SUCCESS = 'REQUEST_SUCCESS';

@@ -1,7 +1,9 @@
 import React from 'react';
-import axios from 'axios';
+
+import { connect } from 'react-redux';
+import * as actions from '../store/actions';
+
 import Card from './Card';
-import { endpoints } from '../../config';
 import Genres from './Genres';
 
 class App extends React.Component {
@@ -9,19 +11,11 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      movieList: [],
       hearted: [],
     };
 
-    this.requestMovies();
+    this.props.onRequestMovies();
   }
-
-  requestMovies = () => {
-    axios
-      .get(endpoints.mostPopularMovies())
-      .then(res => this.setMovieList(res.data.results))
-      .catch(error => console.log(error));
-  };
 
   setMovieList = movieList => {
     this.setState({
@@ -46,26 +40,44 @@ class App extends React.Component {
   };
 
   render() {
-    const { movieList, hearted } = this.state;
+    const { hearted } = this.state;
 
     return (
       <React.Fragment>
         <Genres onChangeList={this.setMovieList} />
 
         <div className="cards">
-          {movieList.map(movie => (
-            <Card
-              key={movie.id}
-              isHearted={hearted.includes(movie.id)}
-              onAddHeart={() => this.addHeart(movie.id)}
-              onRemoveHeart={() => this.removeHeart(movie.id)}
-              movie={movie}
-            />
-          ))}
+          {this.props.movieList
+            ? this.props.movieList.map(movie => (
+                <Card
+                  key={movie.id}
+                  isHearted={hearted.includes(movie.id)}
+                  onAddHeart={() => this.addHeart(movie.id)}
+                  onRemoveHeart={() => this.removeHeart(movie.id)}
+                  movie={movie}
+                />
+              ))
+            : null}
         </div>
       </React.Fragment>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  const { movieList } = state;
+  return {
+    movieList,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onRequestMovies: () => dispatch(actions.requestMovies()),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

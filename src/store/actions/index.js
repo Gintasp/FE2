@@ -1,1 +1,1 @@
-export { default } from './actions';
+export { requestMovies } from './actions';
